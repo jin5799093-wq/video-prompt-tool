@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { analyzeVideo, analyzeVideoFile } from '../services/api';
+import { analyzeVideoFile } from '../services/api';
 
 export function useAnalyze() {
   const [status, setStatus] = useState('idle');
