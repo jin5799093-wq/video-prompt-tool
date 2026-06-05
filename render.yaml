@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: video-prompt-api
+    env: python
+    buildCommand: pip install -r requirements.txt && apt-get update && apt-get install -y ffmpeg
+    startCommand: python server.py
+    envVars:
+      - key: GEMINI_1PSID
+        sync: false
+      - key: GEMINI_1PSIDTS
+        sync: false

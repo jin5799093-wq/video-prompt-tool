@@ -1,0 +1,29 @@
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body, #root { height:100%; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  background: #08080d;
+  color: rgba(255,255,255,0.85);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+/* Ambient light orbs */
+body::before, body::after {
+  content: ''; position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0;
+}
+body::before {
+  width: 600px; height: 600px; top: -200px; left: 50%; transform: translateX(-50%);
+  background: rgba(99,102,241,0.08);
+}
+body::after {
+  width: 400px; height: 400px; bottom: -100px; right: -100px;
+  background: rgba(139,92,246,0.05);
+}
+#root { position:relative; z-index:1; }
+button { cursor:pointer; font-family:inherit; border:none; background:none; color:inherit; }
+input, textarea { font-family:inherit; font-size:inherit; color:inherit; }
+img, video { max-width:100%; display:block; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:2px; }
+::selection { background:rgba(99,102,241,0.3); color:#fff; }
