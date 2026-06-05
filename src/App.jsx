@@ -4,7 +4,6 @@ import { useHistory } from './hooks/useHistory';
 import Header from './components/Header';
 import HistoryPanel from './components/HistoryPanel';
 import Home from './pages/Home';
-import Admin from './pages/Admin';
 import styles from './App.module.css';
 
 function getPath() {
@@ -35,11 +34,7 @@ export default function App() {
         onToggleTheme={toggleTheme}
         onOpenHistory={() => setShowHistory(true)}
       />
-      {path === '/admin' ? (
-        <Admin />
-      ) : (
-        <Home history={history} />
-      )}
+      <Home history={history} />
       {showHistory && (
         <HistoryPanel
           items={history.items}

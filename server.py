@@ -1,14 +1,25 @@
-import os, sys, io, asyncio, tempfile
+import os, json, uuid, tempfile, asyncio
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-from gemini_webapi import GeminiClient
+import httpx
 
 app = Flask(__name__)
 CORS(app)
 
 PROMPT = open('gemini_analyze.py', encoding='utf-8').read()
 PROMPT = PROMPT.split('PROMPT = r"""')[1].rsplit('"""', 1)[0]
+API = 'https://www.doubao.com/samantha/media/get_play_info'
+
+async def call_gemini(video_path):
+    """用 gemini-webapi 分析视频"""
+    from gemini_webapi import GeminiClient
+    c = GeminiClient(
+        secure_1psid=os.environ['GEMINI_1PSID'],
+        secure_1psidts=os.environ['GEMINI_1PSIDTS']
+    )
+    await c.init()
+    resp = await c.generate_content(PROMPT, files=[video_path])
+    return resp.text
 
 @app.route('/api/analyze-video', methods=['POST'])
 def analyze():
@@ -18,14 +29,8 @@ def analyze():
     tmp = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
     f.save(tmp.name); tmp.close()
     try:
-        async def run():
-            c = GeminiClient(
-                secure_1psid=os.environ['GEMINI_1PSID'],
-                secure_1psidts=os.environ['GEMINI_1PSIDTS']
-            )
-            await c.init()
-            return (await c.generate_content(PROMPT, files=[tmp.name])).text
-        return jsonify(success=True, prompt=asyncio.run(run()))
+        result = asyncio.run(call_gemini(tmp.name))
+        return jsonify(success=True, prompt=result)
     except Exception as e:
         return jsonify(success=False, error=str(e)), 500
     finally:
