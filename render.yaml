@@ -2,7 +2,9 @@ services:
   - type: web
     name: video-prompt-tool
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      apt-get update -qq && apt-get install -y -qq build-essential
+      pip install -r requirements.txt
     startCommand: python server.py
     envVars:
       - key: GEMINI_1PSID
