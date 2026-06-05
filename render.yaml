@@ -2,9 +2,7 @@ services:
   - type: web
     name: video-prompt-tool
     runtime: python
-    buildCommand: |
-      apt-get update -qq && apt-get install -y -qq build-essential libcurl4-openssl-dev libssl-dev
-      pip install --no-cache-dir -r requirements.txt
+    buildCommand: pip install -r requirements.txt
     startCommand: python server.py
     envVars:
       - key: GEMINI_1PSID
